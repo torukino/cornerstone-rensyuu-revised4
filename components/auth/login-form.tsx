@@ -55,11 +55,11 @@ const LoginForm = () => {
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>
-										パスワード
+										<span className="mr-4">パスワード</span>
 										<Button variant="ghost" size="icon">
 											<div onClick={() => setShowPassword(!showPassword)}>
-												{showPassword === false && <div>🙈</div>}
-												{showPassword === true && <div>👀</div>}
+												{showPassword === false && <div>🙈 表示</div>}
+												{showPassword === true && <div>👀 隠す</div>}
 											</div>
 										</Button>
 									</FormLabel>
