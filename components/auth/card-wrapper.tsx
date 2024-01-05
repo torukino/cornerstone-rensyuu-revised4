@@ -1,8 +1,8 @@
 import React from 'react'
 
-import BackButton from '@/components/ui/auth/back-button'
-import Header from '@/components/ui/auth/header'
-import Social from '@/components/ui/auth/social'
+import BackButton from '@/components/auth/back-button'
+import Header from '@/components/auth/header'
+import Social from '@/components/auth/social'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 
 interface CardWrapperProps {
