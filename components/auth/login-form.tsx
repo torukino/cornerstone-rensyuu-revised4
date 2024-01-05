@@ -32,7 +32,7 @@ const LoginForm = () => {
 	}
 
 	return (
-		<CardWrapper headerLabel="おかえりなさい" backButtonLabel="アカウントがない場合はこちら" backButtonHref="/auth/register" showSocial>
+		<CardWrapper headerLabel="おかえりなさい" backButtonLabel="Eメールの登録をしていない場合はこちら" backButtonHref="/auth/register" showSocial>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 					<div className="space-y-4">
