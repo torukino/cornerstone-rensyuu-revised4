@@ -1,43 +1,43 @@
 'use client'
-
-import React, { useState, useTransition } from 'react'
+import { useState, useTransition } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
-import type { z } from 'zod'
+import type z from 'zod'
 
-import { login } from '@/actons/login'
+import { register } from '@/actons/register'
 import CardWrapper from '@/components/auth/card-wrapper'
 import FormError from '@/components/form-error'
 import FormSuccess from '@/components/form-success'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { LoginSchema } from '@/schemas'
+import { RegisterSchema } from '@/schemas'
 
-const LoginForm = () => {
+export const RegisterForm = () => {
+	// パスワードの表示状態を管理するための状態変数
+	const [showPassword, setShowPassword] = useState(false)
 	const [error, setError] = useState<string | undefined>('')
 	const [success, setSuccess] = useState<string | undefined>('')
 
 	const [isPending, startTransition] = useTransition()
-	// パスワードの表示状態を管理するための状態変数
-	const [showPassword, setShowPassword] = useState(false)
 
-	const form = useForm<z.infer<typeof LoginSchema>>({
-		resolver: zodResolver(LoginSchema),
+	const form = useForm<z.infer<typeof RegisterSchema>>({
+		resolver: zodResolver(RegisterSchema),
 		defaultValues: {
 			email: '',
 			password: '',
+			name: '',
 		},
 	})
 
-	const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+	const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
 		setError('')
 		setSuccess('')
 
 		startTransition(() => {
-			login(values).then((data: any) => {
+			register(values).then(data => {
 				setError(data.error)
 				setSuccess(data.success)
 			})
@@ -45,10 +45,23 @@ const LoginForm = () => {
 	}
 
 	return (
-		<CardWrapper headerLabel="おかえりなさい" backButtonLabel="Eメールの登録をしていない場合はこちら" backButtonHref="/auth/register" showSocial>
+		<CardWrapper headerLabel="アカウントを作成" backButtonLabel="すでにアカウントを持っているお持ちですか？" backButtonHref="/auth/login" showSocial>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 					<div className="space-y-4">
+						<FormField
+							control={form.control}
+							name="name"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>名前</FormLabel>
+									<FormControl>
+										<Input {...field} disabled={isPending} placeholder="常 道江(John Doe)" type="text" />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 						<FormField
 							control={form.control}
 							name="email"
@@ -56,7 +69,7 @@ const LoginForm = () => {
 								<FormItem>
 									<FormLabel>Eメール</FormLabel>
 									<FormControl>
-										<Input {...field} disabled={isPending} placeholder="John.doe@example.com" type="email" />
+										<Input {...field} disabled={isPending} placeholder="john@example.com" type="email" />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -87,12 +100,10 @@ const LoginForm = () => {
 					<FormError message={error} />
 					<FormSuccess message={success} />
 					<Button disabled={isPending} type="submit" className="w-full">
-						ログイン
+						アカウントを作成します
 					</Button>
 				</form>
 			</Form>
 		</CardWrapper>
 	)
 }
-
-export default LoginForm
