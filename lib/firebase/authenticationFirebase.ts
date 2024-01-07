@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'
+import { createUserWithEmailAndPassword, getAuth, sendEmailVerification } from 'firebase/auth'
 import { v4 as uuidv4 } from 'uuid'
 
 import type { USER } from '@/types/user'
@@ -38,7 +38,13 @@ export const authenticateFirebase = async ({ email, hashedPassword, name }: Auth
 			} as USER
 
 			db.collection('users').doc(id).set(userData)
-			success = 'google auth & firestoreの登録完了'
+
+			const currentUser = auth.currentUser
+			if (!!currentUser) {
+				sendEmailVerification(currentUser)
+			}
+
+			success = `${currentUser?.email}に確認メールを送信しました。}`
 		})
 		.catch(error => {
 			const errorCode = error.code
