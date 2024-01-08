@@ -37,9 +37,11 @@ export default {
 							.then(userCredential => {
 								// Signed in
 								const user = userCredential.user
+								if (user.emailVerified) {
+									return user
+								}
 								// ...
-								console.log('@@@ user Credential', { user })
-								console.log('@@@ user auth', { auth })
+								return null
 							})
 							.catch(error => {
 								const errorCode = error.code
